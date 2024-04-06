@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_worker"
+            android:icon="@drawable/ic_employee"
+            android:title="@string/menu_worker_details" />
+        <item
+            android:id="@+id/nav_generate_qr"
+            android:icon="@drawable/ic_edit_pencil"
+            android:title="Generate QR Code" />
+        <item
+            android:id="@+id/nav_attendance_database"
+            android:icon="@drawable/ic_background"
+            android:title="Attendance Database"/>
+        <item
+            android:id="@+id/nav_project_details"
+            android:icon="@drawable/ic_project_details"
+            android:title="@string/menu_project_details" />
+        <item
+            android:id="@+id/nav_calendar"
+            android:icon="@drawable/ic_calendar"
+            android:title="@string/calendar" />
+        <item
+            android:id="@+id/nav_leave_management"
+            android:icon="@drawable/ic_leave"
+            android:title="@string/leave_management" />
+        <item
+            android:id="@+id/nav_allowance_management"
+            android:icon="@drawable/ic_allowances"
+            android:title="@string/allowance_management" />
+        <item
+            android:id="@+id/nav_sup_tasks"
+            android:icon="@drawable/ic_tasks"
+            android:title="@string/tasks" />
+        <item
+            android:id="@+id/nav_worker_laws"
+            android:icon="@drawable/ic_laws"
+            android:title="@string/laws" />
+    </group>
+
+</menu>

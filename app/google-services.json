@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "576663598341",
+    "project_id": "managee-7344f",
+    "storage_bucket": "managee-7344f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:576663598341:android:be2054c3a1ab120de7336c",
+        "android_client_info": {
+          "package_name": "com.ashstudios.safana"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB99vQFoXfcWqx6O92DkhM3-KCtkXWZnGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

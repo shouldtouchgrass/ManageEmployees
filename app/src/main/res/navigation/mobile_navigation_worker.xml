@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_tasks">
+
+    <fragment
+        android:id="@+id/nav_tasks"
+        android:name="com.ashstudios.safana.ui.mytasks.MyTasksFragment"
+        tools:layout="@layout/fragment_mytasks"
+        android:label="My Tasks"/>
+    <fragment
+        android:id="@+id/nav_scaner_qr"
+        android:name="com.ashstudios.safana.ui.scane_qr.QRCodeScannerFragment"
+        tools:layout="@layout/fragment_qrcode_scanner"
+        android:label="Scaner QR Code"/>
+    <fragment
+        android:id="@+id/nav_calendar_attendance"
+        android:name="com.ashstudios.safana.ui.calendar_attendance.CalendarAttendanceFragment"
+        tools:layout="@layout/calendar_attendance_fragment"
+        android:label="Calendar Fragment"/>
+
+    <fragment
+        android:id="@+id/nav_calendar"
+        android:name="com.ashstudios.safana.ui.calendar.CalendarFragment"
+        tools:layout="@layout/fragment_calendar"
+        android:label="Calendar"/>
+
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.ashstudios.safana.ui.search.SearchFragment"
+        tools:layout="@layout/fragment_search"
+        android:label="Search"/>
+
+    <fragment
+        android:id="@+id/nav_leave"
+        android:name="com.ashstudios.safana.ui.leave.LeaveFragment"
+        tools:layout="@layout/fragment_leave"
+        android:label="Apply for leave"/>
+
+    <fragment
+        android:id="@+id/nav_allowance"
+        android:name="com.ashstudios.safana.ui.allowances.AllowancesFragment"
+        tools:layout="@layout/fragment_allowances"
+        android:label="Allowances"/>
+
+    <fragment
+        android:id="@+id/nav_project_status"
+        android:name="com.ashstudios.safana.ui.projectstatus.ProjectStatusFragment"
+        tools:layout="@layout/fragment_project_status"
+        android:label="Project Status"/>
+
+    <fragment
+        android:id="@+id/nav_worker_laws"
+        android:name="com.ashstudios.safana.ui.laws.WorkerLawsFragment"
+        tools:layout="@layout/fragment_worker_laws"
+        android:label="Laws"/>
+
+</navigation>
