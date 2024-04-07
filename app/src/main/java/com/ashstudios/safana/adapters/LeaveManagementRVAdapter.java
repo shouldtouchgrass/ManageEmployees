@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ import com.ashstudios.safana.R;
 import com.ashstudios.safana.ui.leave_management.LeaveManagementViewModel;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManagementRVAdapter.ViewHolder>{
@@ -28,6 +31,8 @@ public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManageme
     private ArrayList<LeaveModel> leaveModels;
     private Context mContext;
 
+    TextView ll_reason,ll_date;
+    Button accept,reject,go_to_calendar;
     public ArrayList<LeaveModel> getLeaveModels() {
         return leaveModels;
     }
@@ -41,7 +46,7 @@ public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManageme
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.worker_leave_list_item,parent,false);
-        return (new LeaveManagementRVAdapter.ViewHolder(view));
+        return (new ViewHolder(view));
     }
 
     @Override
@@ -50,7 +55,8 @@ public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManageme
         holder.name.setText(leaveModel.getName());
         holder.date.setText(leaveModel.getDate());
         holder.reason.setText(leaveModel.getReason());
-        Picasso.get()
+
+            Picasso.get()
                 .load(leaveModel.getImgUrl())
                 .noFade()
                 .resizeDimen(R.dimen.profile_photo,R.dimen.profile_photo)
@@ -58,32 +64,18 @@ public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManageme
         holder.ll_worker_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-//                builder.setTitle("Simple Alert");
-//                builder.setMessage("We have a message");
-//                builder.setPositiveButton("OK",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                Toast.makeText(v.getContext(),
-//                                        "OK was clicked",
-//                                        Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(v.getContext(),
-//                                android.R.string.no, Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                builder.setCancelable(false);
-//                builder.show();
-
                 final AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create(); //Read Update
-
                 final View view1 = LayoutInflater.from(v.getContext()).inflate(R.layout.leave_management_dialog,null);
-
                 alertDialog.setView(view1);
                 alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                ll_date = alertDialog.findViewById(R.id.ll_date);
+                ll_reason = alertDialog.findViewById(R.id.ll_reason);
+                accept = alertDialog.findViewById(R.id.btn_accept);
+                reject = alertDialog.findViewById(R.id.btn_reject);
+                go_to_calendar = alertDialog.findViewById(R.id.btn_go_to_calender);
+                LeaveModel leaveModel = leaveModels.get(holder.getAdapterPosition());
+                ll_date.setText(leaveModel.getDate());
+                ll_reason.setText(leaveModel.getReason());
 
                 alertDialog.show();
             }

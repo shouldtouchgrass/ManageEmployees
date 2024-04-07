@@ -18,8 +18,10 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.ashstudios.safana.R;
 import com.ashstudios.safana.others.SharedPref;
+import com.ashstudios.safana.ui.leave_management.LeaveManagementFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -31,9 +33,9 @@ public class LeaveFragment extends Fragment {
     private TextView etFrom, etTo,etReason;
     private Button ReQuest;
     private FirebaseFirestore db;
-
-    public String from,to,reason;
     private String Collections = "Leaves";
+    LeaveManagementFragment lmg;
+    private String data, img_url;
 
     @SuppressLint("MissingInflatedId")
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,16 +52,30 @@ public class LeaveFragment extends Fragment {
         Context context = getContext();
         SharedPref sharedPref = new SharedPref(context);
         final String empid = sharedPref.getEMP_ID();
+        db.collection("Employees").document(empid).get().
+                addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        String name = documentSnapshot.getString("name");
+                        String img = documentSnapshot.getString("profile_image");
+                        impdata(name,img);
+                    }
+                });
         ReQuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                from = etFrom.getText().toString();
-                to = etTo.getText().toString();
-                reason = etReason.getText().toString();
+                String from = etFrom.getText().toString();
+                String to = etTo.getText().toString();
+                String reason = etReason.getText().toString();
+                String name = getname();
+                String profile_img = getimg();
                 HashMap<String,Object> leaves = new HashMap<>();
-                leaves.put("empid:",empid);
-                leaves.put("to:",to);
-                leaves.put("reason:",reason);
+                leaves.put("name",name);
+                leaves.put("empid",empid);
+                leaves.put("to",to);
+                leaves.put("reason",reason);
+                leaves.put("profile_image",profile_img);
+
                 db.collection(Collections).document(from).set(leaves).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -84,5 +100,15 @@ public class LeaveFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+    public void impdata(String dt,String img_url){
+        this.data = dt;
+        this.img_url = img_url;
+    }
+    public String getname(){
+        return this.data;
+    }
+    public String getimg(){
+        return this.img_url;
     }
 }

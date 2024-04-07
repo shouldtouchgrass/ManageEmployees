@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ashstudios.safana.models.LeaveModel;
 import com.ashstudios.safana.R;
 import com.ashstudios.safana.adapters.LeaveManagementRVAdapter;
+import com.ashstudios.safana.others.SharedPref;
 import com.ashstudios.safana.others.SwipeToDeleteCallback;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -28,6 +29,7 @@ public class LeaveManagementFragment extends Fragment {
     private Boolean isUndo = false;
     private LeaveManagementRVAdapter leaveManagementRVAdapter;
     private ConstraintLayout constraintLayout;
+    public String data;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -41,9 +43,12 @@ public class LeaveManagementFragment extends Fragment {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(leaveManagementRVAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        enableSwipeToCompleteAndUndo();
-
+        leaveManagementViewModel.setDataChangedListener(() -> {
+            getActivity().runOnUiThread(() -> {
+                leaveManagementRVAdapter.notifyDataSetChanged();
+                recyclerView.setVisibility(View.VISIBLE);
+            });
+        });
         return root;
     }
 
@@ -80,8 +85,6 @@ public class LeaveManagementFragment extends Fragment {
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
         itemTouchhelper.attachToRecyclerView(recyclerView);
     }
-
-
     public static void sort(Context mContext, Bundle b)
     {
         Toast.makeText( mContext, "sorting...", Toast.LENGTH_LONG).show();

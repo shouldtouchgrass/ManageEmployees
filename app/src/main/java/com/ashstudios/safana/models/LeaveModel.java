@@ -6,13 +6,15 @@ public class LeaveModel {
     String imgUrl;
     String emp_id;
     String date;
+    String dateend;
 
-    public LeaveModel(String name, String reason, String imgUrl, String emp_id, String date) {
+    public LeaveModel(String name, String reason, String imgUrl, String emp_id, String date,String dateend) {
         this.name = name;
         this.reason = reason;
         this.imgUrl = imgUrl;
         this.emp_id = emp_id;
         this.date = date;
+        this.dateend = dateend;
     }
 
     public String getName() {
@@ -53,5 +55,12 @@ public class LeaveModel {
 
     public void setDate(String date) {
         this.date = date;
+    }
+    public String getDateEnd() {
+        return dateend;
+    }
+
+    public void setDateEnd(String date) {
+        this.dateend = dateend;
     }
 }
