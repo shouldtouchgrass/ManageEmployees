@@ -3,12 +3,14 @@ package com.ashstudios.safana.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -19,7 +21,10 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.ashstudios.safana.models.LeaveModel;
 import com.ashstudios.safana.R;
+import com.ashstudios.safana.ui.leave_management.LeaveDialog;
 import com.ashstudios.safana.ui.leave_management.LeaveManagementViewModel;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -31,8 +36,7 @@ public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManageme
     private ArrayList<LeaveModel> leaveModels;
     private Context mContext;
 
-    TextView ll_reason,ll_date;
-    Button accept,reject,go_to_calendar;
+    FirebaseFirestore db;
     public ArrayList<LeaveModel> getLeaveModels() {
         return leaveModels;
     }
@@ -61,23 +65,16 @@ public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManageme
                 .noFade()
                 .resizeDimen(R.dimen.profile_photo,R.dimen.profile_photo)
                 .into(holder.circleImageView);
-        holder.ll_worker_item.setOnClickListener(new View.OnClickListener() {
+        //move them over this class if you can
+            holder.ll_worker_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                final AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create(); //Read Update
-                final View view1 = LayoutInflater.from(v.getContext()).inflate(R.layout.leave_management_dialog,null);
-                alertDialog.setView(view1);
-                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                ll_date = alertDialog.findViewById(R.id.ll_date);
-                ll_reason = alertDialog.findViewById(R.id.ll_reason);
-                accept = alertDialog.findViewById(R.id.btn_accept);
-                reject = alertDialog.findViewById(R.id.btn_reject);
-                go_to_calendar = alertDialog.findViewById(R.id.btn_go_to_calender);
                 LeaveModel leaveModel = leaveModels.get(holder.getAdapterPosition());
-                ll_date.setText(leaveModel.getDate());
-                ll_reason.setText(leaveModel.getReason());
-
-                alertDialog.show();
+                String date = leaveModel.getDate();
+                String dateend = leaveModel.getDateEnd();
+                String reason = leaveModel.getReason();
+                String empid = leaveModel.getEmp_id();
+                LeaveDialog.showLeaveDialog(v.getContext(),date,dateend,reason,empid);
             }
         });
     }

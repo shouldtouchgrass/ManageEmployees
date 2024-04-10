@@ -24,7 +24,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class LeaveManagementFragment extends Fragment {
 
-    static  private LeaveManagementViewModel leaveManagementViewModel;
+    static private LeaveManagementViewModel leaveManagementViewModel;
     static RecyclerView recyclerView;
     private Boolean isUndo = false;
     private LeaveManagementRVAdapter leaveManagementRVAdapter;
@@ -39,7 +39,7 @@ public class LeaveManagementFragment extends Fragment {
 
         constraintLayout = root.findViewById(R.id.cl_leave_management);
         recyclerView = root.findViewById(R.id.rc_worker_leave_requests);
-        leaveManagementRVAdapter = new LeaveManagementRVAdapter(leaveManagementViewModel,getContext());
+        leaveManagementRVAdapter = new LeaveManagementRVAdapter(leaveManagementViewModel, getContext());
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(leaveManagementRVAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -49,6 +49,7 @@ public class LeaveManagementFragment extends Fragment {
                 recyclerView.setVisibility(View.VISIBLE);
             });
         });
+
         return root;
     }
 
@@ -68,7 +69,7 @@ public class LeaveManagementFragment extends Fragment {
                 snackbar.setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(isUndo) {
+                        if (isUndo) {
                             leaveManagementRVAdapter.restoreItem(item, position);
                             recyclerView.scrollToPosition(position);
                             isUndo = false;
@@ -85,11 +86,11 @@ public class LeaveManagementFragment extends Fragment {
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
         itemTouchhelper.attachToRecyclerView(recyclerView);
     }
-    public static void sort(Context mContext, Bundle b)
-    {
-        Toast.makeText( mContext, "sorting...", Toast.LENGTH_LONG).show();
+
+    public static void sort(Context mContext, Bundle b) {
+        Toast.makeText(mContext, "sorting...", Toast.LENGTH_LONG).show();
         leaveManagementViewModel.sort(b);
-        LeaveManagementRVAdapter leaveManagementRVAdapter = new LeaveManagementRVAdapter(leaveManagementViewModel,mContext);
+        LeaveManagementRVAdapter leaveManagementRVAdapter = new LeaveManagementRVAdapter(leaveManagementViewModel, mContext);
         recyclerView.setAdapter(leaveManagementRVAdapter);
     }
 }

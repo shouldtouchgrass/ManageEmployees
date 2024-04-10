@@ -21,36 +21,50 @@ public class SearchViewModel extends ViewModel {
     public SearchViewModel() {
         workerModels = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
-        db.collection("Employees").document(empid).get().addOnCompleteListener(task->{
+        db.collection("Employees").document(empid).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 DocumentSnapshot documentSnapshot = task.getResult();
-                if(documentSnapshot!= null && documentSnapshot.exists()){
-                    id_project = (List<String>) documentSnapshot.get("projectID");
+                if(documentSnapshot != null && documentSnapshot.exists()){
+                    List<String> id_project = (List<String>) documentSnapshot.get("projectID");
+                    if(id_project != null && !id_project.isEmpty()){
+                        for(String projectId : id_project){
+                            db.collection("Employees").whereArrayContains("projectID", projectId)
+                                    .get()
+                                    .addOnCompleteListener(task2 -> {
+                                        if(task2.isSuccessful()){
+                                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task2.getResult())) {
+                                                String empId = document.getId();
+
+                                                // Kiểm tra nếu nhân viên đã tồn tại trong workerModels
+                                                boolean isExisting = empId.equals(empid);
+                                                for (WorkerModel existingWorker : workerModels) {
+                                                    if(existingWorker.getEmp_id().equals(empId)){
+                                                        isExisting = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if(!isExisting){
+                                                    String name = document.getString("name");
+                                                    String role = document.getString("role");
+                                                    String profileImg = document.getString("profile_image");
+                                                    String mail = document.getString("mail");
+                                                    String mobile = document.getString("mobile");
+                                                    String sex = document.getString("sex");
+                                                    String birthdate = document.getString("birth_date");
+                                                    String password = document.getString("password");
+                                                    List<String> allowanceIds = (List<String>) document.get("allowance_ids");
+
+                                                    WorkerModel workerModel = new WorkerModel(name, role, profileImg, empId, mail, mobile, sex, birthdate, password, allowanceIds);
+                                                    workerModels.add(workerModel);
+                                                }
+                                            }
+                                        }
+                                    });
+                        }
+                    }
                 }
             }
         });
-        db.collection("Employees").whereArrayContains("projectID",
-                        "PROJECT76")
-                .get()
-                .addOnCompleteListener(task-> {
-                    if(task.isSuccessful()){
-                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                            String name = document.getString("name");
-                            String role = document.getString("role");
-                            String profileImg = document.getString("profile_image");
-                            String empId = document.getId(); // Lấy ID của document
-                            String mail = document.getString("mail");
-                            String mobile = document.getString("mobile");
-                            String sex = document.getString("sex");
-                            String birthdate = document.getString("birth_date");
-                            String password = document.getString("password");
-                            List<String> allowanceIds = (List<String>) document.get("allowance_ids");//??
-
-                            workerModel = new WorkerModel(name, role, profileImg, empId, mail, mobile, sex, birthdate, password, allowanceIds);
-                            workerModels.add(workerModel);
-                        }
-                    }
-                });
     }
     public ArrayList<WorkerModel> getSearchViewModel() {
         return workerModels;

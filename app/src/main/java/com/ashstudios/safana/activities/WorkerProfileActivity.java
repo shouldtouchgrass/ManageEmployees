@@ -1,11 +1,10 @@
 package com.ashstudios.safana.activities;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +21,8 @@ import com.squareup.picasso.Picasso;
 public class WorkerProfileActivity extends AppCompatActivity {
     private FirebaseFirestore mDatabase;
     public static String employeeId;
+    private Context mContext;
+    Button btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,6 @@ public class WorkerProfileActivity extends AppCompatActivity {
         employeeId = getIntent().getStringExtra("EMPLOYEE_ID");
         // Lấy tham chiếu đến Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         // Lấy chi tiết nhân viên từ Firestore
         if (employeeId != null) {
             db.collection("Employees").document(employeeId).get().addOnCompleteListener(task -> {

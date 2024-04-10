@@ -76,16 +76,46 @@
 
     <TextView
         android:id="@+id/ll_date"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/brownbold"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@color/gray"
         android:textSize="20sp"
+        android:layout_marginLeft="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/ll_data_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/brownbold"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/gray"
+        android:textSize="20sp"
+        android:text="to"
+        android:layout_marginLeft="@dimen/_10sdp"
+        tools:ignore="MissingConstraints"
 
+        app:layout_constraintStart_toEndOf="@id/ll_date"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:id="@+id/ll_date_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:fontFamily="@font/brownbold"
+        android:textColor="@color/gray"
+        android:textSize="20sp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        tools:ignore="MissingConstraints"
+
+        app:layout_constraintStart_toEndOf="@id/ll_data_text"
+        app:layout_constraintTop_toTopOf="parent"
+        />
     <TextView
         android:id="@+id/ll_reason_text"
         android:layout_width="wrap_content"

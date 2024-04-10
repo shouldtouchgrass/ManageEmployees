@@ -104,8 +104,8 @@
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/emp_name"/>
-
+                    app:layout_constraintTop_toBottomOf="@+id/emp_name"
+                    app:layout_constraintBottom_toTopOf="@id/tv_email_text"/>
 
                 <TextView
                     android:id="@+id/tv_email_text"
