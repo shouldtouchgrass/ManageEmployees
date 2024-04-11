@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ashstudios.safana.models.LeaveModel;
 import com.ashstudios.safana.R;
 import com.ashstudios.safana.adapters.LeaveManagementRVAdapter;
-import com.ashstudios.safana.others.SharedPref;
 import com.ashstudios.safana.others.SwipeToDeleteCallback;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -49,6 +48,7 @@ public class LeaveManagementFragment extends Fragment {
                 recyclerView.setVisibility(View.VISIBLE);
             });
         });
+        enableSwipeToCompleteAndUndo();
 
         return root;
     }

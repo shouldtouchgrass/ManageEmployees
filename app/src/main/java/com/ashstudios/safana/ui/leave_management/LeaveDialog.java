@@ -2,8 +2,6 @@ package com.ashstudios.safana.ui.leave_management;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class LeaveDialog {
-    static FirebaseFirestore db;
     public static void showLeaveDialog(Context context,String Date,String DateEnd,String Reason,String emp_id){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -32,7 +29,9 @@ public class LeaveDialog {
         ll_dateend.setText(DateEnd);
         ll_reason.setText(Reason);
         //
-        db = FirebaseFirestore.getInstance();
+        AlertDialog dialog = builder.create();
+        //
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Leaves").whereEqualTo("empid",emp_id).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()){
@@ -46,6 +45,7 @@ public class LeaveDialog {
                                         .addOnFailureListener(e->{
                                             Log.e("TAG","Error Adding Status Accept");
                                         });
+                                dialog.dismiss();
                             });
                             btn_reject.setOnClickListener(v -> {
                                 db.collection("Leaves").document(documentID).update("Status","Reject")
@@ -55,11 +55,12 @@ public class LeaveDialog {
                                         .addOnFailureListener(e->{
                                             Log.e("TAG","Error Adding Status Reject");
                                         });
+                                dialog.dismiss();
                             });
                         }
                     }
                 });
-        AlertDialog dialog = builder.create();
+
         dialog.show();
     }
 }
