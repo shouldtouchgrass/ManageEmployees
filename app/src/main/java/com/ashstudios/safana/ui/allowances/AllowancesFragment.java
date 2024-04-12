@@ -74,13 +74,6 @@ public class AllowancesFragment extends Fragment {
         return root;
     }
 
-    private void getData() {
-        arrayListMutableLiveData.add(new AllowanceModel(getActivity().getResources().getString(R.string.food),"Food","2 Months"));
-        arrayListMutableLiveData.add(new AllowanceModel(getActivity().getResources().getString(R.string.laptop),"Laptop","Lifetime"));
-        arrayListMutableLiveData.add(new AllowanceModel(getActivity().getResources().getString(R.string.car),"Vehicle","3 Months"));
-        arrayListMutableLiveData.add(new AllowanceModel(getActivity().getResources().getString(R.string.building),"Flat","4 Months"));
-        arrayListMutableLiveData.add(new AllowanceModel(getActivity().getResources().getString(R.string.insurence),"Insurance","6 Months"));
-    }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {

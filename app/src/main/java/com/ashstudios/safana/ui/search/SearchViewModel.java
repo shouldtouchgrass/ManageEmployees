@@ -3,6 +3,8 @@ package com.ashstudios.safana.ui.search;
 
 import androidx.lifecycle.ViewModel;
 import com.ashstudios.safana.models.WorkerModel;
+import com.ashstudios.safana.others.SharedPref;
+import com.ashstudios.safana.ui.worker_details.WorkerDetailsViewModel;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -12,16 +14,18 @@ import java.util.Objects;
 
 public class SearchViewModel extends ViewModel {
 
-    private final FirebaseFirestore db;
-    WorkerModel workerModel;
-    private final ArrayList<WorkerModel> workerModels;
-    private final String empid = "EMP002";
-    private List<String> id_project;
+    private ArrayList<WorkerModel> workerModels;
+    FirebaseFirestore db;
+
+    private DataChangedListener2 listener2;
 
     public SearchViewModel() {
         workerModels = new ArrayList<>();
+
+    }
+    public void initWithUserId(String userId) {
         db = FirebaseFirestore.getInstance();
-        db.collection("Employees").document(empid).get().addOnCompleteListener(task -> {
+        db.collection("Employees").document(userId).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 DocumentSnapshot documentSnapshot = task.getResult();
                 if(documentSnapshot != null && documentSnapshot.exists()){
@@ -36,7 +40,7 @@ public class SearchViewModel extends ViewModel {
                                                 String empId = document.getId();
 
                                                 // Kiểm tra nếu nhân viên đã tồn tại trong workerModels
-                                                boolean isExisting = empId.equals(empid);
+                                                boolean isExisting = empId.equals(userId);
                                                 for (WorkerModel existingWorker : workerModels) {
                                                     if(existingWorker.getEmp_id().equals(empId)){
                                                         isExisting = true;
@@ -56,6 +60,9 @@ public class SearchViewModel extends ViewModel {
 
                                                     WorkerModel workerModel = new WorkerModel(name, role, profileImg, empId, mail, mobile, sex, birthdate, password, allowanceIds);
                                                     workerModels.add(workerModel);
+                                                    if(listener2 != null) {
+                                                        listener2.onDataChanged();
+                                                    }
                                                 }
                                             }
                                         }
@@ -66,7 +73,13 @@ public class SearchViewModel extends ViewModel {
             }
         });
     }
-    public ArrayList<WorkerModel> getSearchViewModel() {
-        return workerModels;
+    public interface DataChangedListener2 {
+        void onDataChanged();
     }
+    public void setDataChangedListener2(SearchViewModel.DataChangedListener2 listener2) {
+        this.listener2 = listener2;
+    }
+
+    public ArrayList<WorkerModel> getSearchViewModel() {return workerModels;}
+
 }
