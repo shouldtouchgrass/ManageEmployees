@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.search.ChatFragment">
+
+   <androidx.recyclerview.widget.RecyclerView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/recyler_view"/>
+   <TextView
+       android:id="@+id/tv_no_conversations"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Hiện tại bạn chưa có cuộc hội thoại nào"
+       android:layout_centerInParent="true"
+       android:textColor="@color/black"
+       android:visibility="gone"/>
+
+</RelativeLayout>
