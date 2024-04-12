@@ -1,9 +1,11 @@
 package com.ashstudios.safana.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,12 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -30,11 +34,14 @@ import com.ashstudios.safana.R;
 import com.ashstudios.safana.others.Msg;
 import com.ashstudios.safana.others.SharedPref;
 import com.ashstudios.safana.ui.mytasks.MyTasksFragment;
+import com.ashstudios.safana.utils.FirebaseUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.squareup.picasso.Picasso;
 
 public class WorkerDashboardActivity extends AppCompatActivity {
@@ -87,7 +94,12 @@ public class WorkerDashboardActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                invalidateOptionsMenu();
+            }
+        });
         navigationView.setItemIconTintList(null);
         //setting icon tint to white for other menu items
         setDefaultIconTint();
@@ -97,6 +109,7 @@ public class WorkerDashboardActivity extends AppCompatActivity {
         ColorStateList colorSelector = ResourcesCompat.getColorStateList(getResources(), R.color.success, getTheme());
         DrawableCompat.setTintList(favoriteIcon, colorSelector);
         favoriteItem.setIcon(favoriteIcon);
+        getFCMToken();
     }
     private void loadNavViewHeaderImage() {
         db.collection("Employees").document(sharedPref.getEMP_ID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -152,9 +165,16 @@ public class WorkerDashboardActivity extends AppCompatActivity {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPref sharedPref = new SharedPref(getBaseContext());
-                sharedPref.logout();
-                ExitActivity.exitApplicationAndRemoveFromRecent(WorkerDashboardActivity.this);
+                FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            SharedPref sharedPref = new SharedPref(getBaseContext());
+                            sharedPref.logout();
+                            ExitActivity.exitApplicationAndRemoveFromRecent(WorkerDashboardActivity.this);
+                        }
+                    }
+                });
             }
         });
     }
@@ -163,8 +183,21 @@ public class WorkerDashboardActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.worker_dashboard, menu);
+
+        // Get the current destination ID from the NavController
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        int destId = navController.getCurrentDestination().getId();
+
+        // Check if the current destination is nav_search
+        if (destId == R.id.nav_search) {
+            // Change the icon for action_settings
+            MenuItem item = menu.findItem(R.id.action_settings);
+            item.setIcon(R.drawable.ic_search2);
+        }
+
         return true;
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -182,6 +215,11 @@ public class WorkerDashboardActivity extends AppCompatActivity {
                     taskSortBundle = initTaskSortBundle();  // for remembering the sorting. Otherwise default sorting is always displayed not the selected one
                     bottomSheetTaskFragment.setArguments(taskSortBundle);
                     bottomSheetTaskFragment.show(getSupportFragmentManager(), "bstf");
+                } else if (navigationView.getMenu().findItem(R.id.nav_search).isChecked())
+                {
+                    NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+                    navController.navigate(R.id.searchFragment); // Sử dụng ID của action đã định nghĩa trong nav_graph để điều hướng
+                    return true;
                 }
                 return true;
 
@@ -210,6 +248,18 @@ public class WorkerDashboardActivity extends AppCompatActivity {
         {
             return taskSortBundle;
         }
+    }
+    void getFCMToken(){
+        Context context = getApplicationContext();
+        SharedPref sharedPref = new SharedPref(context);
+        String currentUserId = sharedPref.getEMP_ID();
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                String token = task.getResult();
+                FirebaseUtil.currentUserDetails(currentUserId).update("fcmToken",token);
+            }
+        });
     }
     
 }

@@ -17,7 +17,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.ashstudios.safana.R;
 import com.ashstudios.safana.models.WorkerModel;
 import com.ashstudios.safana.activities.WorkerProfileActivity;
-import com.ashstudios.safana.ui.search.SearchViewModel;
+import com.ashstudios.safana.ui.search.ChatViewModel;
 import com.ashstudios.safana.ui.worker_details.WorkerDetailsViewModel;
 import com.squareup.picasso.Picasso;
 
@@ -32,8 +32,8 @@ public class WorkerRVAdapter extends RecyclerView.Adapter<WorkerRVAdapter.ViewHo
         this.workerModels = workerDetailsViewModel.getWorkerModels();
         this.mContext = mContext;
     }
-    public WorkerRVAdapter(SearchViewModel searchViewModel, Context mContext) {
-        this.workerModels = searchViewModel.getSearchViewModel();
+    public WorkerRVAdapter(ChatViewModel chatViewModel, Context mContext) {
+        this.workerModels = chatViewModel.getSearchViewModel();
         this.mContext = mContext;
     }
 

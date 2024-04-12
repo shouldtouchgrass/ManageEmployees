@@ -23,7 +23,6 @@ public class CreateAllowanceActivity extends AppCompatActivity {
     Button button;
     EditText allowanceNameEditText, allowanceDurationEditText;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

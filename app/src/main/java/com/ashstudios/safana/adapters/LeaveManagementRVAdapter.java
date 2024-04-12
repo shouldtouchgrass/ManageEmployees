@@ -60,13 +60,13 @@ public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManageme
         holder.date.setText(leaveModel.getDate());
         holder.reason.setText(leaveModel.getReason());
 
-            Picasso.get()
+        Picasso.get()
                 .load(leaveModel.getImgUrl())
                 .noFade()
                 .resizeDimen(R.dimen.profile_photo,R.dimen.profile_photo)
                 .into(holder.circleImageView);
         //move them over this class if you can
-            holder.ll_worker_item.setOnClickListener(new View.OnClickListener() {
+        holder.ll_worker_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 LeaveModel leaveModel = leaveModels.get(holder.getAdapterPosition());
