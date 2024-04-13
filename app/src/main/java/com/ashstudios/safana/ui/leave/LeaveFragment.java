@@ -2,7 +2,9 @@ package com.ashstudios.safana.ui.leave;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -14,7 +16,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.ashstudios.safana.R;
 import com.ashstudios.safana.others.SharedPref;
@@ -31,7 +36,7 @@ public class LeaveFragment extends Fragment {
 
     private LeaveViewModel toolsViewModel;
     private TextView etFrom, etTo,etReason;
-    private Button ReQuest;
+    private Button ReQuest,checklog;
     private FirebaseFirestore db;
     private String Collections = "Leaves";
     LeaveManagementFragment lmg;
@@ -48,6 +53,9 @@ public class LeaveFragment extends Fragment {
         etTo = root.findViewById(R.id.et_to);
         etReason = root.findViewById(R.id.et_reason);
         ReQuest = root.findViewById(R.id.request);
+        checklog = root.findViewById(R.id.checklog);
+
+
         //
         Context context = getContext();
         SharedPref sharedPref = new SharedPref(context);
@@ -87,6 +95,9 @@ public class LeaveFragment extends Fragment {
                     }
                 });
             }
+        });
+        checklog.setOnClickListener(v->{
+            Navigation.findNavController(v).navigate(R.id.leave_to_log);
         });
         return root;
     }

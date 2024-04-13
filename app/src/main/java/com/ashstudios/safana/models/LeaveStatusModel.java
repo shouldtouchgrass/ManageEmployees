@@ -1,21 +1,24 @@
 package com.ashstudios.safana.models;
 
-public class LeaveModel {
+public class LeaveStatusModel {
     String name;
     String reason;
     String imgUrl;
     String emp_id;
     String date;
     String dateend;
+    String status;
 
-    public LeaveModel(String name, String reason, String imgUrl, String emp_id, String date,String dateend) {
+    public LeaveStatusModel(String name, String reason, String imgUrl, String emp_id, String date, String dateend,String status) {
         this.name = name;
         this.reason = reason;
         this.imgUrl = imgUrl;
         this.emp_id = emp_id;
         this.date = date;
         this.dateend = dateend;
+        this.status = status;
     }
+
     public String getName() {
         return name;
     }
@@ -59,7 +62,14 @@ public class LeaveModel {
         return dateend;
     }
 
-    public void setDateEnd(String date) {
+    public void setDateEnd(String dateend) {
         this.dateend = dateend;
+    }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

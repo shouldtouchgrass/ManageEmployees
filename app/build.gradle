@@ -43,6 +43,10 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.firebase:firebase-database:20.0.4'
     implementation 'com.google.firebase:firebase-messaging:23.0.3'
+    //fix error java.lang.NoClassDefFoundError: Failed resolution of: Lcom/google/firebase/appcheck/interop/InternalAppCheckTokenProvider;
+    implementation 'com.google.firebase:firebase-common:20.3.0'
+    implementation 'com.google.firebase:firebase-bom:32.8.1'
+    //
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

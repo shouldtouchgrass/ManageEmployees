@@ -37,8 +37,17 @@
         android:id="@+id/nav_leave"
         android:name="com.ashstudios.safana.ui.leave.LeaveFragment"
         tools:layout="@layout/fragment_leave"
-        android:label="Apply for leave"/>
+        android:label="Apply for leave">
+        <action
+            android:id="@+id/leave_to_log"
+            app:destination="@+id/nav_check_log"/>
+    </fragment>
 
+    <fragment
+        android:id="@+id/nav_check_log"
+        android:name="com.ashstudios.safana.ui.leave.Check_log_fragment"
+        tools:layout="@layout/fragment_leave_check_log"
+        android:label="Check Log"/>
     <fragment
         android:id="@+id/nav_allowance"
         android:name="com.ashstudios.safana.ui.allowances.AllowancesFragment"

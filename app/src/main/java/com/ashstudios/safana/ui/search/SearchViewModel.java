@@ -3,8 +3,6 @@ package com.ashstudios.safana.ui.search;
 
 import androidx.lifecycle.ViewModel;
 import com.ashstudios.safana.models.WorkerModel;
-import com.ashstudios.safana.others.SharedPref;
-import com.ashstudios.safana.ui.worker_details.WorkerDetailsViewModel;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -21,7 +19,6 @@ public class SearchViewModel extends ViewModel {
 
     public SearchViewModel() {
         workerModels = new ArrayList<>();
-
     }
     public void initWithUserId(String userId) {
         db = FirebaseFirestore.getInstance();
@@ -81,5 +78,6 @@ public class SearchViewModel extends ViewModel {
     }
 
     public ArrayList<WorkerModel> getSearchViewModel() {return workerModels;}
+
 
 }

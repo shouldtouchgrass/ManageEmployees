@@ -1,19 +1,13 @@
 package com.ashstudios.safana.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Intent;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,13 +15,9 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.ashstudios.safana.models.LeaveModel;
 import com.ashstudios.safana.R;
-import com.ashstudios.safana.ui.leave_management.LeaveDialog;
+import com.ashstudios.safana.ui.leave_management.LeaveManagementFragment;
 import com.ashstudios.safana.ui.leave_management.LeaveManagementViewModel;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -35,8 +25,6 @@ public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManageme
 
     private ArrayList<LeaveModel> leaveModels;
     private Context mContext;
-
-    FirebaseFirestore db;
     public ArrayList<LeaveModel> getLeaveModels() {
         return leaveModels;
     }
@@ -56,25 +44,24 @@ public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManageme
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LeaveModel leaveModel = leaveModels.get(position);
-        holder.name.setText(leaveModel.getName());
-        holder.date.setText(leaveModel.getDate());
-        holder.reason.setText(leaveModel.getReason());
+            holder.name.setText(leaveModel.getName());
+            holder.date.setText(leaveModel.getDate());
+            holder.reason.setText(leaveModel.getReason());
 
-        Picasso.get()
-                .load(leaveModel.getImgUrl())
-                .noFade()
-                .resizeDimen(R.dimen.profile_photo,R.dimen.profile_photo)
-                .into(holder.circleImageView);
+            Picasso.get()
+                    .load(leaveModel.getImgUrl())
+                    .noFade()
+                    .resizeDimen(R.dimen.profile_photo,R.dimen.profile_photo)
+                    .into(holder.circleImageView);
         //move them over this class if you can
         holder.ll_worker_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                LeaveModel leaveModel = leaveModels.get(holder.getAdapterPosition());
+                LeaveModel leaveModel = leaveModels.get(holder.getAbsoluteAdapterPosition());
                 String date = leaveModel.getDate();
                 String dateend = leaveModel.getDateEnd();
                 String reason = leaveModel.getReason();
-                String empid = leaveModel.getEmp_id();
-                LeaveDialog.showLeaveDialog(v.getContext(),date,dateend,reason,empid);
+                LeaveManagementFragment.showLeaveDialog(v.getContext(),date,dateend,reason,holder.getAbsoluteAdapterPosition());
             }
         });
     }
@@ -91,6 +78,10 @@ public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManageme
 
     public void restoreItem(LeaveModel item, int position) {
         leaveModels.add(position,item);
+        notifyDataSetChanged();
+    }
+    public void clearData() {
+        leaveModels.clear();
         notifyDataSetChanged();
     }
 
