@@ -46,7 +46,7 @@ public class NewUserActivity extends AppCompatActivity {
         initializeProgressBarDialog();
         empId = getIntent().getStringExtra("empid");
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Safana");
+        toolbar.setTitle("ManageEmployeeFT");
         setSupportActionBar(toolbar);
 
         context = NewUserActivity.this;

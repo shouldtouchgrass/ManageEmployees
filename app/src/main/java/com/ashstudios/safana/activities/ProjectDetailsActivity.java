@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -112,84 +113,84 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         String empId = sharedPref.getEMP_ID();
         dialog.show();
         db.collection("Employees")
-        .document(empId)
-        .get()
-        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    if (documentSnapshot.exists()) {
-                        if (projectId != null) {
-                            db.collection("Projects").document(projectId)
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot projectDocument = task.getResult();
-                                        if (projectDocument.exists()) {
-                                            String title = projectDocument.getString("Title");
-                                            String budget = projectDocument.getString("Budget");
-                                            List<String> employeeList = (List<String>) projectDocument.get("Workers ID List");
-                                            String stDate = projectDocument.getString("Start Date");
-                                            String duDate = projectDocument.getString("Due Date");
+                .document(empId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (documentSnapshot.exists()) {
+                                if (projectId != null) {
+                                    db.collection("Projects").document(projectId)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        DocumentSnapshot projectDocument = task.getResult();
+                                                        if (projectDocument.exists()) {
+                                                            String title = projectDocument.getString("Title");
+                                                            String budget = projectDocument.getString("Budget");
+                                                            List<String> employeeList = (List<String>) projectDocument.get("Workers ID List");
+                                                            String stDate = projectDocument.getString("Start Date");
+                                                            String duDate = projectDocument.getString("Due Date");
 
 
-                                            int num = employeeList.size();
-                                            project_name.setText(title);
-                                            project_budget.setText(budget);
-                                            project_stDate.setText(stDate);
-                                            project_duDate.setText(duDate);
-                                            project_worker_num.setText(String.valueOf(num));
-                                            scrollView.setVisibility(View.VISIBLE);
+                                                            int num = employeeList.size();
+                                                            project_name.setText(title);
+                                                            project_budget.setText(budget);
+                                                            project_stDate.setText(stDate);
+                                                            project_duDate.setText(duDate);
+                                                            project_worker_num.setText(String.valueOf(num));
+                                                            scrollView.setVisibility(View.VISIBLE);
 
-                                            if (projectDocument.contains("taskID List")) {
-                                                List<String> taskIDList = (List<String>) projectDocument.get("taskID List");
-                                                ArrayList<String> taskNamesList = new ArrayList<>();
-                                                // Loop through taskIDList to fetch task names from database
-                                                for (String taskId : taskIDList) {
-                                                    Log.d(TAG, taskId);
-                                                    FirebaseFirestore.getInstance().collection("Tasks").document(taskId)
-                                                            .get()
-                                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task2) {
-                                                                    if (task2.isSuccessful()) {
-                                                                        DocumentSnapshot taskDocument = task2.getResult();
-                                                                        if (taskDocument.exists()) {
-                                                                            String taskName = taskDocument.getString("Task Name");
-                                                                            Log.d(TAG, taskName);
-                                                                            taskNamesList.add(taskName);
-                                                                            // Check if all task names have been fetched
-                                                                            if (taskNamesList.size() == taskIDList.size()) {
-                                                                                StringBuilder stringBuilder = new StringBuilder();
-                                                                                for (String item : taskNamesList) {
-                                                                                    stringBuilder.append(item).append("\n");
+                                                            if (projectDocument.contains("taskID List")) {
+                                                                List<String> taskIDList = (List<String>) projectDocument.get("taskID List");
+                                                                ArrayList<String> taskNamesList = new ArrayList<>();
+                                                                // Loop through taskIDList to fetch task names from database
+                                                                for (String taskId : taskIDList) {
+                                                                    Log.d(TAG, taskId);
+                                                                    FirebaseFirestore.getInstance().collection("Tasks").document(taskId)
+                                                                            .get()
+                                                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task2) {
+                                                                                    if (task2.isSuccessful()) {
+                                                                                        DocumentSnapshot taskDocument = task2.getResult();
+                                                                                        if (taskDocument.exists()) {
+                                                                                            String taskName = taskDocument.getString("Task Name");
+                                                                                            Log.d(TAG, taskName);
+                                                                                            taskNamesList.add(taskName);
+                                                                                            // Check if all task names have been fetched
+                                                                                            if (taskNamesList.size() == taskIDList.size()) {
+                                                                                                StringBuilder stringBuilder = new StringBuilder();
+                                                                                                for (String item : taskNamesList) {
+                                                                                                    stringBuilder.append(item).append("\n");
+                                                                                                }
+                                                                                                details.setText(stringBuilder.toString());  // display additional details
+                                                                                            }
+                                                                                        }
+                                                                                    }//task2.isSuccessful()
                                                                                 }
-                                                                                details.setText(stringBuilder.toString());  // display additional details
-                                                                            }
-                                                                        }
-                                                                    }//task2.isSuccessful()
-                                                                }
-                                                            });
-                                                }//for (String taskId : taskIDList)
-                                            }else {//projectDocument.contains("taskID List")
-                                                details.setText("");
-                                            }
-                                        }
-                                    }//task.isSuccessful()
+                                                                            });
+                                                                }//for (String taskId : taskIDList)
+                                                            }else {//projectDocument.contains("taskID List")
+                                                                details.setText("");
+                                                            }
+                                                        }
+                                                    }//task.isSuccessful()
+                                                }
+                                            });
                                 }
-                    });
+                            }
+                        } else {
+                            // Handle error
                         }
+                        dialog.dismiss();
                     }
-            } else {
-                // Handle error
-            }
-            dialog.dismiss();
-        }
-    });
-}
+                });
+    }
 
 
     private void initGraphs(ArrayList<Integer> taskStatusList) {
@@ -197,7 +198,7 @@ public class ProjectDetailsActivity extends AppCompatActivity {
         int sum  =0;
         if(taskStatusList==null || taskStatusList.isEmpty()){
             percent = 0;
-            n = 4;
+            n = 0;
         }else{
             for (int i : taskStatusList){
                 sum+=i;
@@ -208,7 +209,14 @@ public class ProjectDetailsActivity extends AppCompatActivity {
 
         progressBar.setProgress(percent);
         TextView text = findViewById(R.id.progress_bar_text);
+        TextView p_status = findViewById(R.id.tv_status);
         text.setText(String.valueOf(percent) + "%");
+
+        if(percent < 100){
+            p_status.setText("IN PROGRESS");
+        }else{
+            p_status.setText("DONE");
+        }
         LineChartView lineChartView = findViewById(R.id.chart);
         pieLineChartView = findViewById(R.id.pie_chart);
         pieCharData(taskStatusList);
@@ -248,54 +256,40 @@ public class ProjectDetailsActivity extends AppCompatActivity {
             values.add(sliceValue);
         }
 
-        // Add missing values if necessary
-        for (int i = numValues; i < 4; i++) {
-            SliceValue sliceValue = new SliceValue(0, ChartUtils.pickColor());
-            values.add(sliceValue);
-        }
-
-
-        //pie chart
         PieChartData data = new PieChartData(values);
         boolean hasLabels = true;
         data.setHasLabels(hasLabels);
         boolean hasLabelForSelected = false;
         data.setHasLabelsOnlyForSelected(hasLabelForSelected);
-        boolean hasLabelsOutside = false;
-        data.setHasLabelsOutside(hasLabelsOutside);
-        boolean hasCenterCircle = false;
+        boolean hasCenterCircle = true;
         data.setHasCenterCircle(hasCenterCircle);
+
 
         boolean isExploded = true;
         if (isExploded) {
-            data.setSlicesSpacing(24);
+            data.setSlicesSpacing(5);
         }
 
-        boolean hasCenterText1 = false;
-        if (hasCenterText1) {
-            data.setCenterText1("Hello!");
-
-            // Get roboto-italic font.
-            Typeface tf = Typeface.createFromAsset(ProjectDetailsActivity.this.getAssets(), "Roboto-Italic.ttf");
+        String defaultText = "Task Percent"; // Default center text
+        // Set center text based on conditions
+        if (taskStatusList == null || taskStatusList.isEmpty()) {
+            data.setCenterText1(" ");
+            // Load font from resources
+            Typeface tf = ResourcesCompat.getFont(ProjectDetailsActivity.this, R.font.brownbold);
             data.setCenterText1Typeface(tf);
 
             // Get font size from dimens.xml and convert it to sp(library uses sp values).
-            data.setCenterText1FontSize(ChartUtils.px2sp(getResources().getDisplayMetrics().scaledDensity,
-                    15));
-        }
+            data.setCenterText1FontSize(ChartUtils.px2sp(getResources().getDisplayMetrics().scaledDensity, 50));
+        } else {
+            data.setCenterText1(defaultText);
+            // Load font from resources
+            Typeface tf = ResourcesCompat.getFont(ProjectDetailsActivity.this, R.font.brownbold);
+            data.setCenterText1Typeface(tf);
 
-        boolean hasCenterText2 = false;
-        if (hasCenterText2) {
-            data.setCenterText2("Charts (Roboto Italic)");
-
-            Typeface tf = Typeface.createFromAsset(ProjectDetailsActivity.this.getAssets(), "Roboto-Italic.ttf");
-
-            data.setCenterText2Typeface(tf);
-            data.setCenterText2FontSize(ChartUtils.px2sp(getResources().getDisplayMetrics().scaledDensity,
-                    20));
+            // Get font size from dimens.xml and convert it to sp(library uses sp values).
+            data.setCenterText1FontSize(ChartUtils.px2sp(getResources().getDisplayMetrics().scaledDensity, 50));
         }
 
         pieLineChartView.setPieChartData(data);
     }
 }
-

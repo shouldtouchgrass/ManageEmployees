@@ -24,6 +24,7 @@ public class WorkerDetailsFragment extends Fragment {
 
     static private WorkerDetailsViewModel workerDetailsViewModel;
     static private RecyclerView recyclerView;
+    static private WorkerRVAdapter workerRVAdapter;
     ProgressBar progressBar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -37,7 +38,7 @@ public class WorkerDetailsFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
-        WorkerRVAdapter workerRVAdapter = new WorkerRVAdapter(workerDetailsViewModel,getContext());
+        workerRVAdapter = new WorkerRVAdapter(workerDetailsViewModel,getContext());
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(workerRVAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -52,20 +53,34 @@ public class WorkerDetailsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Intent generateEmployeeId = new Intent(getContext(), AddEmployeesActivity.class);
-                    startActivity(generateEmployeeId);
+                Intent generateEmployeeId = new Intent(getContext(), AddEmployeesActivity.class);
+                startActivity(generateEmployeeId);
             }
         });
 
 
         return root;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        workerRVAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
 
-    public static void sort(Context mContext,Bundle b)
-    {
+
+    public static void sort(Context mContext,Bundle b, boolean nameChip, boolean maleChip, boolean femaleChip) {
         Toast.makeText( mContext, "sorting...", Toast.LENGTH_LONG).show();
-        workerDetailsViewModel.sort(b);
-        WorkerRVAdapter workerRVAdapter = new WorkerRVAdapter(workerDetailsViewModel,mContext);
-        recyclerView.setAdapter(workerRVAdapter);
+        if(nameChip){
+            workerDetailsViewModel.sort_name(b);
+        }
+        if(maleChip){
+            workerDetailsViewModel.sort_male(b);
+        }
+        if(femaleChip){
+            workerDetailsViewModel.sort_female(b);
+        }
+        workerRVAdapter.notifyDataSetChanged();
     }
 }

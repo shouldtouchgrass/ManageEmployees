@@ -82,7 +82,7 @@ public class EditProfileActivity extends AppCompatActivity {
         sharedPref = new SharedPref(EditProfileActivity.this);
         RetriveEmployeeData();
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Safana");
+        toolbar.setTitle("ManageEmployeeFT");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

@@ -56,4 +56,9 @@
         android:name="com.ashstudios.safana.ui.attendance_database.WebviewFragment"
         android:label="Attendance Database"
         tools:layout="@layout/fragment_webview"/>
+    <fragment
+        android:id="@+id/nav_map"
+        android:name="com.ashstudios.safana.ui.generate_qr.BookmarkSample"
+        android:label="Maps"
+        tools:layout="@layout/map"/>
 </navigation>

@@ -59,6 +59,7 @@
         android:layout_width="357dp"
         android:layout_height="50dp"
         android:hint="Enter Link"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/generateButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

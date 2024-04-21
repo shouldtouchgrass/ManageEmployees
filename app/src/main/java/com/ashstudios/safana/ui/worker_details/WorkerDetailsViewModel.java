@@ -12,6 +12,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -62,9 +64,49 @@ public class WorkerDetailsViewModel extends ViewModel {
     public ArrayList<WorkerModel> getWorkerModels() {
         return workerModels;
     }
+    public void clearAllWorkers() {
+        workerModels.clear();  // Xóa tất cả các mục trong danh sách
 
-    public void sort(Bundle b) {
-        workerModels.remove(0);
+        // Thông báo cho listener về sự thay đổi dữ liệu
+        if (listener != null) {
+            listener.onDataChanged();
+        }
+    }
+    public void sort_name(Bundle b) {
+        Comparator<WorkerModel> comparator = Comparator.comparing(worker -> worker.getName().substring(0, 1));
+        Collections.sort(workerModels, comparator);
+    }
+
+    public void sort_male(Bundle b) {
+        ArrayList<WorkerModel> male_workers = new ArrayList<>();
+        for (WorkerModel workerModel : workerModels) {
+            String gender = workerModel.getSex();
+            if (gender.equals("male")) {
+                male_workers.add(workerModel);
+            }
+        }
+        workerModels.clear();
+        workerModels.addAll(male_workers);
+
+        if (listener != null) {
+            listener.onDataChanged();
+        }
+    }
+
+    public void sort_female(Bundle b) {
+        ArrayList<WorkerModel> male_workers = new ArrayList<>();
+        for (WorkerModel workerModel : workerModels) {
+            String gender = workerModel.getSex();
+            if (gender.equals("female")) {
+                male_workers.add(workerModel);
+            }
+        }
+        workerModels.clear();
+        workerModels.addAll(male_workers);
+
+        if (listener != null) {
+            listener.onDataChanged();
+        }
     }
 
     public interface DataChangedListener {

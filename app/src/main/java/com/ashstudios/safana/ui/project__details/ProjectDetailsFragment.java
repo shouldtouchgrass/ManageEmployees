@@ -3,10 +3,12 @@ package com.ashstudios.safana.ui.project__details;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -70,6 +72,17 @@ public class ProjectDetailsFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_settings).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
     private void enableSwipeToCompleteAndUndo() {
         SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getActivity()) {
             @Override
@@ -104,13 +117,5 @@ public class ProjectDetailsFragment extends Fragment {
     }
 
 
-    /*public static void sort(Context mContext, Bundle b)
-    {
-        Toast.makeText( mContext, "sorting...", Toast.LENGTH_LONG).show();
-        projectDetailsViewModel.sort(b);
-        ProjectAdapter  leaveManagementRVAdapter = new ProjectAdapter(mContext,projectDetailsViewModel.getArrayListMutableLiveData());
-        recyclerView.setAdapter(leaveManagementRVAdapter);
-    }*/
 
 }
-

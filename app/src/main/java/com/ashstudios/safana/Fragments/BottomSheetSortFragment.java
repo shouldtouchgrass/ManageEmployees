@@ -43,9 +43,6 @@ public class BottomSheetSortFragment extends BottomSheetDialogFragment {
         final Chip chip_name = view.findViewById(R.id.chip_sort_name);
         final Chip chip_male = view.findViewById(R.id.chip_filter_male);
         final Chip chip_female = view.findViewById(R.id.chip_filter_female);
-        final Chip chip_other = view.findViewById(R.id.chip_filter_other);
-        final Spinner spinner_role = view.findViewById(R.id.spinner_role);
-        final Spinner spinner_shift = view.findViewById(R.id.spinner_shift);
 
         // for remembering the sorting. Otherwise default sorting is always displayed not the selected one
         Bundle sorting = getArguments();
@@ -54,9 +51,6 @@ public class BottomSheetSortFragment extends BottomSheetDialogFragment {
             chip_name.setChecked(sorting.getBoolean("nameChip"));
             chip_male.setChecked(sorting.getBoolean("maleChip"));
             chip_female.setChecked(sorting.getBoolean("femaleChip"));
-            chip_other.setChecked(sorting.getBoolean("otherChip"));
-//            spinner_role.setSelection(1);
-//            spinner_shift.setSelection(1);
 
             if(chip_name.isChecked())
                 chip_name.setChipIcon(getResources().getDrawable(R.drawable.ic_sort_by_attributes));
@@ -86,19 +80,13 @@ public class BottomSheetSortFragment extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 // Getting sorting data;
                 boolean nameChip = chip_name.isChecked();
-//              String role =  ((Spinner)view.findViewById(R.id.spinner_role)).getSelectedItem().toString();
-//              String shift =  ((Spinner)view.findViewById(R.id.spinner_shift)).getSelectedItem().toString();
                 boolean maleChip = (chip_male).isChecked();
                 boolean femaleChip = (chip_female).isChecked();
-                boolean otherChip = (chip_other).isChecked();
 
                 Bundle b = new Bundle();
                 b.putBoolean("nameChip",nameChip);
                 b.putBoolean("maleChip",maleChip);
                 b.putBoolean("femaleChip",femaleChip);
-                b.putBoolean("otherChip",otherChip);
-//              b.putString("role",role);
-//              b.putString("shift",shift);
 
                 ((SupervisorDashboard)getActivity()).onWorkerDetailsSortingChanged(b);
                 dismiss();

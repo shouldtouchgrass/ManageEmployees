@@ -48,7 +48,7 @@ public class LeaveStatusRVAdapter extends RecyclerView.Adapter<LeaveStatusRVAdap
         holder.date.setText(leaveStatusModel.getDate());
         holder.reason.setText(leaveStatusModel.getReason());
         holder.status.setText(leaveStatusModel.getStatus());
-            Picasso.get()
+        Picasso.get()
                 .load(leaveStatusModel.getImgUrl())
                 .noFade()
                 .resizeDimen(R.dimen.profile_photo,R.dimen.profile_photo)

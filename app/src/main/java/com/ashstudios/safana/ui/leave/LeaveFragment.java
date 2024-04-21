@@ -82,9 +82,10 @@ public class LeaveFragment extends Fragment {
                 leaves.put("empid",empid);
                 leaves.put("to",to);
                 leaves.put("reason",reason);
+                leaves.put("date",from);
                 leaves.put("profile_image",profile_img);
 
-                db.collection(Collections).document(from).set(leaves).addOnCompleteListener(new OnCompleteListener<Void>() {
+                db.collection(Collections).document(from+empid).set(leaves).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {

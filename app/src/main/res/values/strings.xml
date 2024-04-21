@@ -88,4 +88,6 @@
     <string name="scaner_qr_code">Scaner QR Code</string>
     <string name="back"><![CDATA[<-]]></string>
     <string name="forward"><![CDATA[->]]></string>
+    <string name="history_attendance">History Attendance</string>
+    <string name="chat">Chat</string>
 </resources>

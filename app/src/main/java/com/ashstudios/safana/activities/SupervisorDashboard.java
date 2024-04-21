@@ -122,6 +122,7 @@ public class SupervisorDashboard extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.supervisor_dashboard, menu);
+
         return true;
     }
 
@@ -156,6 +157,12 @@ public class SupervisorDashboard extends AppCompatActivity {
                     bottomSheetTaskFragment.setArguments(taskSortBundle);
                     bottomSheetTaskFragment.show(getSupportFragmentManager(), "bstf");
                 }
+                else if (navigationView.getMenu().findItem(R.id.nav_generate_qr).isChecked())
+                {
+                    NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+                    navController.navigate(R.id.nav_map); // Sử dụng ID của action đã định nghĩa trong nav_graph để điều hướng
+                    return true;
+                }
                 return true;
 
             default:
@@ -163,28 +170,28 @@ public class SupervisorDashboard extends AppCompatActivity {
         }
     }
 
-    public void onWorkerDetailsSortingChanged(Bundle b)
-    {
+    public void onWorkerDetailsSortingChanged(Bundle b) {
+        boolean nameChip = b.getBoolean("nameChip");
+        boolean maleChip = b.getBoolean("maleChip");
+        boolean femaleChip = b.getBoolean("femaleChip");
         workerSortBundle = (Bundle)b.clone();
-        WorkerDetailsFragment.sort(getBaseContext(),workerSortBundle);
+        WorkerDetailsFragment.sort(getBaseContext(),workerSortBundle, nameChip, maleChip, femaleChip);
     }
 
-    public void onLeaveSortingChanged(Bundle b)
-    {
+    public void onLeaveSortingChanged(Bundle b) {
+        boolean nameChip = b.getBoolean("nameChip");
+        boolean dateChip = b.getBoolean("dateChip");
         leaveSortBundle = (Bundle)b.clone();
-        LeaveManagementFragment.sort(getBaseContext(),leaveSortBundle);
+        LeaveManagementFragment.sort(getBaseContext(),leaveSortBundle, dateChip, nameChip);
     }
 
-    private Bundle initWorkerBundle()
-    {
+    private Bundle initWorkerBundle() {
         if(workerSortBundle.isEmpty())
         {
             workerSortBundle.putBoolean("nameChip",false);
             workerSortBundle.putBoolean("maleChip",true);
             workerSortBundle.putBoolean("femaleChip",true);
             workerSortBundle.putBoolean("otherChip",true);
-//          workerSortBundle.putString("role","all");
-//          workerSortBundle.putString("shift","all");
             return workerSortBundle;
         }
         else
@@ -193,8 +200,7 @@ public class SupervisorDashboard extends AppCompatActivity {
         }
     }
 
-    private Bundle initLeaveSortBundle()
-    {
+    private Bundle initLeaveSortBundle() {
         if(leaveSortBundle.isEmpty())
         {
             leaveSortBundle.putBoolean("nameChip",false);
@@ -202,8 +208,6 @@ public class SupervisorDashboard extends AppCompatActivity {
             leaveSortBundle.putBoolean("maleChip",true);
             leaveSortBundle.putBoolean("femaleChip",true);
             leaveSortBundle.putBoolean("otherChip",true);
-//          workerSortBundle.putString("role","all");
-//          workerSortBundle.putString("shift","all");
             return leaveSortBundle;
         }
         else
@@ -211,10 +215,12 @@ public class SupervisorDashboard extends AppCompatActivity {
             return leaveSortBundle;
         }
     }
-    public void onSupervisorTaskSortChange(Bundle b)
-    {
+    public void onSupervisorTaskSortChange(Bundle b) {
+        boolean dateChip = b.getBoolean("dateChip");
+        boolean completeChip = b.getBoolean("completedChip");
+        boolean incompleteChip = b.getBoolean("incompleteChip");
         taskSortBundle = (Bundle)b.clone();
-        TasksFragment.sort(getBaseContext(),taskSortBundle);
+        TasksFragment.sort(getBaseContext(),taskSortBundle, dateChip, completeChip, incompleteChip);
     }
 
     private Bundle initTaskSortBundle()

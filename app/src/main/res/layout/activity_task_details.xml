@@ -64,12 +64,12 @@
                 android:fontFamily="@font/lexenddeca"
                 android:paddingTop="20dp"
                 android:paddingBottom="0dp"
-                android:text="Assigned To:"
+                android:text="Assigned To"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/dark_gray"
                 android:textStyle="bold"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/tv_task_date_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title_project_name" />
@@ -86,7 +86,7 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/dark_gray"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_task_assigned_to"
                 app:layout_constraintTop_toBottomOf="@+id/title_project_name" />
@@ -100,8 +100,8 @@
                 android:padding="5dp"
                 android:textAlignment="center"
                 android:textAllCaps="true"
-                android:textColor="@color/dark_gray"
-                android:textSize="15sp"
+                android:textColor="@color/dark_green"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toStartOf="@+id/tv_task_date"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_task_assigned_to_text" />
@@ -115,8 +115,8 @@
                 android:padding="5dp"
                 android:textAlignment="center"
                 android:textAllCaps="true"
-                android:textColor="@color/dark_gray"
-                android:textSize="15sp"
+                android:textColor="@color/dark_green"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_task_assigned_to"
                 app:layout_constraintTop_toBottomOf="@+id/tv_task_date_text" />
@@ -132,7 +132,7 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/dark_gray"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="20dp"
@@ -146,12 +146,12 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/lexenddeca"
-                android:paddingTop="20dp"
+                android:paddingTop="10dp"
                 android:paddingBottom="0dp"
                 android:gravity="center"
                 android:textAllCaps="true"
-                android:textColor="@color/dark_gray"
-                android:textSize="16dp"
+                android:textColor="@color/dark_green"
+                android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -171,13 +171,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/brownbold"
+                    android:fontFamily="@font/lexenddeca"
                     android:padding="10dp"
                     android:layout_marginBottom="20dp"
                     android:text="Status: "
                     android:textStyle="bold"
                     android:textAllCaps="true"
-                    android:textSize="16sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_status"
@@ -189,7 +189,8 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="10dp"
                     android:textAllCaps="true"
-                    android:textColor="@color/gray"
+                    android:textStyle="bold"
+                    android:textColor="@color/green"
                     android:textSize="16sp" />
             </LinearLayout>
 

@@ -15,15 +15,15 @@
         <item
             android:id="@+id/nav_calendar_attendance"
             android:icon="@drawable/ic_arrow"
-            android:title="Calendar Attendance"/>
+            android:title="@string/history_attendance"/>
         <item
             android:id="@+id/nav_calendar"
             android:icon="@drawable/ic_calendar"
             android:title="@string/calendar" />
         <item
             android:id="@+id/nav_search"
-            android:icon="@drawable/ic_search"
-            android:title="@string/search" />
+            android:icon="@drawable/ic_message"
+            android:title="@string/chat" />
         <item
             android:id="@+id/nav_leave"
             android:icon="@drawable/ic_leave"

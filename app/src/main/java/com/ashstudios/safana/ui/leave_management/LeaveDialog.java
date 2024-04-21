@@ -14,7 +14,7 @@ import com.ashstudios.safana.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-public class LeaveDialog {
+public class    LeaveDialog {
     static FirebaseFirestore db;
     public static void showLeaveDialog(Context context,String Date,String DateEnd,String Reason,String emp_id){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

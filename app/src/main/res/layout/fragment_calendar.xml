@@ -53,6 +53,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         android:orientation="horizontal">
 
         <TextView
@@ -60,7 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="SUN"
-            android:textColor="@color/gray"
+            android:textStyle="bold"
+            android:textColor="@color/chat_color_sender"
             android:textAlignment="center"
             android:textSize="16sp"/>
 
@@ -69,7 +72,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="MON"
-            android:textColor="@color/gray"
+            android:textStyle="bold"
+            android:textColor="@color/chat_color_sender"
             android:textAlignment="center"
             android:textSize="16sp"/>
 
@@ -78,7 +82,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TUE"
-            android:textColor="@color/gray"
+            android:textStyle="bold"
+            android:textColor="@color/chat_color_sender"
             android:textAlignment="center"
             android:textSize="16sp"/>
 
@@ -87,7 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="WED"
-            android:textColor="@color/gray"
+            android:textStyle="bold"
+            android:textColor="@color/chat_color_sender"
             android:textAlignment="center"
             android:textSize="16sp"/>
 
@@ -95,8 +101,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="THUR"
-            android:textColor="@color/gray"
+            android:text="THU"
+            android:textStyle="bold"
+            android:textColor="@color/chat_color_sender"
             android:textAlignment="center"
             android:textSize="16sp"/>
 
@@ -105,7 +112,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="FRI"
-            android:textColor="@color/gray"
+            android:textStyle="bold"
+            android:textColor="@color/chat_color_sender"
             android:textAlignment="center"
             android:textSize="16sp"/>
 
@@ -114,13 +122,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="SAT"
-            android:textColor="@color/gray"
+            android:textStyle="bold"
+            android:textColor="@color/chat_color_sender"
             android:textAlignment="center"
             android:textSize="16sp"/>
 
 
     </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
@@ -128,7 +136,8 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         tools:itemCount="7"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"
+        />
 
     <TextView
         android:id="@+id/event"

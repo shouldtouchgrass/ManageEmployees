@@ -90,7 +90,7 @@ public class ChatActivity extends AppCompatActivity {
                     String name = document.getString("name");
                     String role = document.getString("role");
                     String profileImg = document.getString("profile_image");
-                    String empId = document.getId(); // Lấy ID của document
+                    String empId = document.getId();
                     String mail = document.getString("mail");
                     String mobile = document.getString("mobile");
                     String sex = document.getString("sex");
@@ -100,11 +100,13 @@ public class ChatActivity extends AppCompatActivity {
                     otherUserModel = new OtherUserModel(name, role, profileImg, empId, mail, mobile, sex, birthdate, password, allowanceIds);
                     otherUsername.setText(name);
                     Picasso.get().load(profileImg).into(imageView);
+
                 }
             } else {
                 Toast.makeText(null, "Error" + task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
+
         db.collection("Employees").document(currentUserId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();

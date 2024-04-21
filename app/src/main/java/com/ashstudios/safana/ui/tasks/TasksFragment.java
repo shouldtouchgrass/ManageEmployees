@@ -33,7 +33,7 @@ public class TasksFragment extends Fragment {
 
     static private TasksViewModel tasksViewModel;
     static private RecyclerView recyclerView;
-    private SupervisorTaskAdapter supervisorTaskAdapter;
+    static private SupervisorTaskAdapter supervisorTaskAdapter;
     private ConstraintLayout constraintLayout;
     private Boolean isUndo = false;
 
@@ -109,12 +109,21 @@ public class TasksFragment extends Fragment {
     }
 
 
-    public static void sort(Context mContext, Bundle b)
-    {
+    public static void sort(Context mContext, Bundle b, boolean chip_date, boolean chip_complete, boolean chip_incomplete) {
         Toast.makeText( mContext, "sorting...", Toast.LENGTH_LONG).show();
-        tasksViewModel.sort(b);
-        TaskAdapter leaveManagementRVAdapter = new TaskAdapter(mContext,tasksViewModel.getArrayListMutableLiveData());
-        recyclerView.setAdapter(leaveManagementRVAdapter);
+
+        if(chip_date){
+            tasksViewModel.sort(b);
+        }
+
+        if(chip_complete){
+            tasksViewModel.sort_completed(b);
+        }
+
+        if(chip_incomplete){
+            tasksViewModel.sort_incompleted(b);
+        }
+        supervisorTaskAdapter.notifyDataSetChanged();
     }
 
 }
