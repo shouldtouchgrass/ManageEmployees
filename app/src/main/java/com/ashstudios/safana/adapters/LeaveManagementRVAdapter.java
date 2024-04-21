@@ -44,15 +44,15 @@ public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManageme
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LeaveModel leaveModel = leaveModels.get(position);
-            holder.name.setText(leaveModel.getName());
-            holder.date.setText(leaveModel.getDate());
-            holder.reason.setText(leaveModel.getReason());
+        holder.name.setText(leaveModel.getName());
+        holder.date.setText(leaveModel.getDate());
+        holder.reason.setText(leaveModel.getReason());
 
-            Picasso.get()
-                    .load(leaveModel.getImgUrl())
-                    .noFade()
-                    .resizeDimen(R.dimen.profile_photo,R.dimen.profile_photo)
-                    .into(holder.circleImageView);
+        Picasso.get()
+                .load(leaveModel.getImgUrl())
+                .noFade()
+                .resizeDimen(R.dimen.profile_photo,R.dimen.profile_photo)
+                .into(holder.circleImageView);
         //move them over this class if you can
         holder.ll_worker_item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +61,8 @@ public class LeaveManagementRVAdapter extends RecyclerView.Adapter<LeaveManageme
                 String date = leaveModel.getDate();
                 String dateend = leaveModel.getDateEnd();
                 String reason = leaveModel.getReason();
-                LeaveManagementFragment.showLeaveDialog(v.getContext(),date,dateend,reason,holder.getAbsoluteAdapterPosition());
+                String empid = leaveModel.getEmp_id();
+                LeaveManagementFragment.showLeaveDialog(v.getContext(),date,dateend,reason,holder.getAbsoluteAdapterPosition(),empid);
             }
         });
     }

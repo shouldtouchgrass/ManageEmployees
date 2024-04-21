@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashstudios.safana.R;
+import com.ashstudios.safana.others.SharedPref;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -78,17 +80,11 @@ public class CalendarAttendanceFragment extends Fragment implements CalendarAdap
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             selectedDate = LocalDate.now();
         }
+        Context context = getContext();
+        SharedPref sharedPref = new SharedPref(context);
+        String currentUserId = sharedPref.getEMP_ID();
+        loadUserAttendance(currentUserId);
 
-
-
-        //  greenDays.add(new DayItem(23, 1, 2024));
-        //  greenDays.add(new DayItem(7, 3, 2024, 3));
-        //  greenDays.add(new DayItem(14, 3, 2024, 2));
-        //  greenDays.add(new DayItem(12, 3, 2024, 4));
-        //  greenDays.add(new DayItem(12, 2, 2024, 5));
-
-        //setMonthView(greenDays);
-        loadUserAttendance("EMP001");
         int month = selectedDate.getMonthValue();
         Button[] quarterButtons = {q1, q2, q3, q4};
         int quarterIndex = (month - 1) / 3;
@@ -272,7 +268,6 @@ public class CalendarAttendanceFragment extends Fragment implements CalendarAdap
 // Thay đổi URL sau đây theo cấu trúc của Firebase Database của bạn
         DatabaseReference ref = database.getReference("userScans");
 
-        String userIdToSearch = "EMP001";
 
 // Truy cập và kiểm tra từng năm, từng tháng, từng ngày
 // Lưu ý: Bạn cần xác định khoảng thời gian để tìm kiếm (ví dụ: các năm từ 2020 đến 2024)
@@ -288,7 +283,7 @@ public class CalendarAttendanceFragment extends Fragment implements CalendarAdap
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 String userId = snapshot.child("userId").getValue(String.class);
-                                if (userIdToSearch.equals(userId)) {
+                                if (userId.equals(userId)) {
                                     // Chèn vào greenDay
                                     greenDays.add(new DayItem(finalDay, finalMonth, finalYear, 5));
                                     Calendar today = Calendar.getInstance();

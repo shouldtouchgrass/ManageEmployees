@@ -7,7 +7,17 @@ import java.util.List;
 public class WorkerModel {
     String name,role,profile_img,emp_id,mail,mobile,sex,birthdate,password;
     List<String> allowance_ids;
+    private List<String> taskID;
     boolean isSelected;
+    Integer taskComplete;
+
+    public Integer getTaskComplete() {
+        return taskComplete;
+    }
+
+    public void setTaskComplete(Integer taskComplete) {
+        this.taskComplete = taskComplete;
+    }
 
     public WorkerModel() {
     }
@@ -117,5 +127,12 @@ public class WorkerModel {
 
     public void setAllowance_ids(List<String> allowance_ids) {
         this.allowance_ids = allowance_ids;
+    }
+    public List<String> getTaskID() {
+        return taskID;
+    }
+
+    public void setTaskID(List<String> taskID) {
+        this.taskID = taskID;
     }
 }

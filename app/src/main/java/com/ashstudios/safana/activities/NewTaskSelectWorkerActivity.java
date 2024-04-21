@@ -151,6 +151,7 @@ public class NewTaskSelectWorkerActivity extends AppCompatActivity {
         data.put("Task Description", taskDesc);
         data.put("EMP ID", selectedID);
         data.put("Project Name", projectName);
+        data.put("Status(%)", "0");
 
         // Writing data to Firestore
         db.collection("Tasks").document(taskID)

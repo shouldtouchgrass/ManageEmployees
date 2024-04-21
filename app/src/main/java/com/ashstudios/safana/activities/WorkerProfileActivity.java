@@ -73,7 +73,8 @@ public class WorkerProfileActivity extends AppCompatActivity {
                 empRole = findViewById(R.id.emp_role), tvEmail = findViewById(R.id.tv_email),
                 tvMob = findViewById(R.id.tv_mob), tvSex = findViewById(R.id.tv_sex),
                 tvBdate = findViewById(R.id.tv_bdate), tvAllowance = findViewById(R.id.tv_allowances_given);
-
+        TextView tvTaskAssigned = findViewById(R.id.tv_task_assigned);
+        TextView tvTaskComplete = findViewById(R.id.tv_task_completed);
 
         // Sử dụng Picasso hoặc một thư viện tương tự để load hình ảnh
         Picasso.get().load(workerModel.getImgUrl()).into(profileImage);
@@ -92,6 +93,17 @@ public class WorkerProfileActivity extends AppCompatActivity {
             tvAllowance.setText(allowances);
         } else {
             tvAllowance.setText("No allowances"); // Hoặc một giá trị placeholder khác
+        }
+        if (workerModel.getTaskID() != null && !workerModel.getTaskID().isEmpty()) {
+            int numberOfTasks = workerModel.getTaskID().size();
+            tvTaskAssigned.setText(String.valueOf(numberOfTasks));
+        } else {
+            tvTaskAssigned.setText("0");
+        }
+        if (workerModel.getTaskID() != null && !workerModel.getTaskID().isEmpty()) {
+            tvTaskComplete.setText(String.valueOf(workerModel.getTaskComplete()));
+        } else {
+            tvTaskComplete.setText("0");
         }
     }
 }

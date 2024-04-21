@@ -12,6 +12,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class LeaveManagementViewModel extends ViewModel {
@@ -31,7 +33,7 @@ public class LeaveManagementViewModel extends ViewModel {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                             String empid = document.getString("empid");
-                            String datesign = document.getId();
+                            String datesign = document.getString("date");
                             String reason = document.getString("reason");
                             String name = document.getString("name");
                             String img_url = document.getString("profile_image");
@@ -51,7 +53,13 @@ public class LeaveManagementViewModel extends ViewModel {
                 });
     }
     public void sort(Bundle b) {
-        leaveModels.remove(0);
+        Comparator<LeaveModel> comparator = Comparator.comparing(LeaveModel::getDate);
+        Collections.sort(leaveModels, comparator); // Sort the list using the comparator
+    }
+
+    public void sort_name(Bundle b) {
+        Comparator<LeaveModel> comparator = Comparator.comparing(leaveModel -> leaveModel.getName().substring(0, 1));
+        Collections.sort(leaveModels, comparator);
     }
     public ArrayList<LeaveModel> getLeaveModels() {return leaveModels;}
     public interface DataChangedListener {

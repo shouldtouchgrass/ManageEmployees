@@ -45,10 +45,10 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.squareup.picasso.Picasso;
 
 public class WorkerDashboardActivity extends AppCompatActivity {
+    private static final String TAG = "WORKER_DASHBOARD_ACTIVITY";
 
     private AppBarConfiguration mAppBarConfiguration;
     private ImageView mProfileImage;
-    private TextView mTvName,mTvEmail;
     private NavigationView navigationView;
     private Bundle taskSortBundle;
     private LinearLayout linearLayout;
@@ -228,24 +228,30 @@ public class WorkerDashboardActivity extends AppCompatActivity {
         }
     }
 
-    public void onWorkerDetailsSortingChanged(Bundle b)
-    {
+    public void onWorkerDetailsSortingChanged(Bundle b) {
+        boolean nameChip =  b.getBoolean("nameChip");
+        boolean maleChip =  b.getBoolean("maleChip");
+        boolean femaleChip =  b.getBoolean("femaleChip");
         taskSortBundle = (Bundle)b.clone();
-        MyTasksFragment.sort(getBaseContext(),taskSortBundle);
+        MyTasksFragment fragment = (MyTasksFragment) getSupportFragmentManager().findFragmentByTag("fbss");
+        if (fragment != null) {
+            fragment.sort(getBaseContext(), taskSortBundle, nameChip, maleChip, femaleChip);
+        }else{
+            Log.e(TAG, "fragment is null");
+        }
+
+        //MyTasksFragment.sort(getBaseContext(),taskSortBundle, nameChip, maleChip, femaleChip);
     }
 
-    private Bundle initTaskSortBundle()
-    {
-        if(taskSortBundle.isEmpty())
-        {
+    private Bundle initTaskSortBundle() {
+        if(taskSortBundle.isEmpty()) {
             taskSortBundle.putBoolean("isSupervisor",false);
             taskSortBundle.putBoolean("dateChip",false);
             taskSortBundle.putBoolean("completedChip",false);
             taskSortBundle.putBoolean("incompleteChip",false);
             return taskSortBundle;
         }
-        else
-        {
+        else {
             return taskSortBundle;
         }
     }
@@ -261,5 +267,5 @@ public class WorkerDashboardActivity extends AppCompatActivity {
             }
         });
     }
-    
+
 }

@@ -59,6 +59,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                         TaskModel taskModel = taskModelArrayList.get(position);
                         Intent i = new Intent(context, MyTaskDetailsActivity.class);
                         i.putExtra("taskID", taskModel.getTaskID());
+                        i.putExtra("empID", taskModel.getEmpid());
                         context.startActivity(i);
                     }
                 }

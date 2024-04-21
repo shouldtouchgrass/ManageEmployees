@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,8 +35,9 @@ public class MyTaskDetailsActivity extends AppCompatActivity {
     Spinner spinner;
     CheckBox check;
     TaskStatusCategoryAdapter taskStatusCategoryAdapter;
-    TextView project_name, assigned_to, due_date, task_desc;
+    TextView project_name, assigned_to, due_date, task_desc, task_status;
     String taskID;
+    String empID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,9 @@ public class MyTaskDetailsActivity extends AppCompatActivity {
         assigned_to = findViewById(R.id.tv_task_assigned_to);
         due_date = findViewById(R.id.tv_task_date);
         task_desc = findViewById(R.id.tv_task_desc);
+        task_status = findViewById(R.id.tv_status);
         taskID = getIntent().getStringExtra("taskID");
+        empID = getIntent().getStringExtra("empID");
 
         spinner = findViewById(R.id.spinner_category);
         taskStatusCategoryAdapter = new TaskStatusCategoryAdapter(this, R.layout.item_selected, getListCategory());
@@ -62,7 +67,7 @@ public class MyTaskDetailsActivity extends AppCompatActivity {
         });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Safana");
+        toolbar.setTitle("TaskDetail");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -101,7 +106,7 @@ public class MyTaskDetailsActivity extends AppCompatActivity {
                                 String proj_name = document.getString("Project Name");
                                 String duDate = document.getString("Due Date");
                                 String taskDesc = document.getString("Task Description");
-
+                                String taskStatus = document.getString("Status(%)");
                                 String employeeID = document.getString("EMP ID");
 
                                 if (employeeID != null) {
@@ -118,6 +123,7 @@ public class MyTaskDetailsActivity extends AppCompatActivity {
                                                             assigned_to.setText(empName);
                                                             due_date.setText(duDate);
                                                             task_desc.setText(taskDesc);
+                                                            task_status.setText(taskStatus + "%");
                                                         }
                                                     }
                                                 }
@@ -158,10 +164,6 @@ public class MyTaskDetailsActivity extends AppCompatActivity {
                 percent = 100;
             }
 
-            TextView test = findViewById(R.id.display);
-            test.setText(String.valueOf(percent)); //debug
-
-            // save
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference taskRef = db.collection("Tasks").document(taskID);
 
@@ -171,6 +173,9 @@ public class MyTaskDetailsActivity extends AppCompatActivity {
                         public void onSuccess(Void aVoid) {
                             // Update successful
                             Toast.makeText(MyTaskDetailsActivity.this, "Succeed to update data!", Toast.LENGTH_LONG).show();
+                            if (percent == 100) {
+                                updateTaskComplete(db);
+                            }
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -184,5 +189,23 @@ public class MyTaskDetailsActivity extends AppCompatActivity {
             Toast.makeText(MyTaskDetailsActivity.this, "Please check into complete area!", Toast.LENGTH_LONG).show();
         }
     }
-
+    private void updateTaskComplete(FirebaseFirestore db) {
+        db.collection("Employees").document(empID) // replace "EMP_ID" with the actual employee ID
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    Long taskComplete = documentSnapshot.getLong("taskComplete");
+                    if (taskComplete == null) {
+                        taskComplete = 1L;
+                    } else {
+                        taskComplete += 1;
+                    }
+                    db.collection("Employees").document(empID).update("taskComplete", taskComplete)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(MyTaskDetailsActivity.this, "Task completion count updated!", Toast.LENGTH_SHORT).show();
+                                finish();
+                            })
+                            .addOnFailureListener(e -> Toast.makeText(MyTaskDetailsActivity.this, "Failed to update task completion count.", Toast.LENGTH_SHORT).show());
+                })
+                .addOnFailureListener(e -> Toast.makeText(MyTaskDetailsActivity.this, "Failed to fetch employee data.", Toast.LENGTH_SHORT).show());
+    }
 }

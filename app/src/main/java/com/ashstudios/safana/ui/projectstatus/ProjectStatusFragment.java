@@ -4,10 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -48,13 +50,12 @@ public class ProjectStatusFragment extends Fragment {
         arrayListMutableLiveData = new ArrayList<>();
 
         constraintLayout = root.findViewById(R.id.constraint_layout);
-        recyclerView = root.findViewById(R.id.rv_sup_projects);
+        recyclerView = root.findViewById(R.id.rv_projects);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         //set the adapter
         projectAdapter = new ProjectAdapter(getActivity(), projects);
-        //tasksViewModel.sort(new Bundle());
         recyclerView.setAdapter(projectAdapter);
         Context context = getContext();
         SharedPref sharedPref = new SharedPref(context);
@@ -79,6 +80,17 @@ public class ProjectStatusFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_settings).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
     private void enableSwipeToCompleteAndUndo() {
         SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getActivity()) {
             @Override
@@ -127,27 +139,27 @@ public class ProjectStatusFragment extends Fragment {
                         String duDate = document.getString("Due Date");
 
                         db.collection("Tasks")
-                            .whereEqualTo("Project Name", title)
-                            .get()
-                            .addOnCompleteListener(tasksTask -> {
-                            if (tasksTask.isSuccessful()) {
-                                ArrayList<String> taskStatusList = new ArrayList<>();
-                                for (QueryDocumentSnapshot document2 : Objects.requireNonNull(tasksTask.getResult())) {
-                                    if (document2.contains("Status(%)")) {
-                                        String status = document2.getString("Status(%)");
-                                        Log.d(TAG, status);
-                                        taskStatusList.add(status);
+                                .whereEqualTo("Project Name", title)
+                                .get()
+                                .addOnCompleteListener(tasksTask -> {
+                                    if (tasksTask.isSuccessful()) {
+                                        ArrayList<String> taskStatusList = new ArrayList<>();
+                                        for (QueryDocumentSnapshot document2 : Objects.requireNonNull(tasksTask.getResult())) {
+                                            if (document2.contains("Status(%)")) {
+                                                String status = document2.getString("Status(%)");
+                                                Log.d(TAG, status);
+                                                taskStatusList.add(status);
+                                            }
+                                        }
+                                        ProjectModel projectModel = new ProjectModel(projectId, taskStatusList, title, stDate, duDate);
+                                        projects.add(projectModel);
+                                        arrayListMutableLiveData.add(projectModel);
+                                        projectAdapter.notifyDataSetChanged();
+
+                                    } else {//tasksTask.isSuccessful()
+
                                     }
-                                }
-                            ProjectModel projectModel = new ProjectModel(projectId, taskStatusList, title, stDate, duDate);
-                            projects.add(projectModel);
-                            arrayListMutableLiveData.add(projectModel);
-                            projectAdapter.notifyDataSetChanged();
-
-                            } else {//tasksTask.isSuccessful()
-
-                            }
-                        });
+                                });
 
                     } else {
                         // Handle the case where the document does not exist
